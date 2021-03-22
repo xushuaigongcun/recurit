@@ -99,22 +99,17 @@ export default router
 router.beforeEach((to, from, next) => {
   if (to.meta.requireAuth) { // 判断该路由是否需要登录权限
     if (sessionStorage.getItem("token") == 'true') { // 判断本地是否存在token
-      console.log('1')
       next()
     } else {
-      console.log('2')
       // 未登录,跳转到登陆页面
       next({
         path: '/login'
       })
     }
   } else {
-    console.log('3')
     if(sessionStorage.getItem("token") == 'true'){
-      console.log('4')
       next('/index');
     }else{
-      console.log('5')
       next();
     }
   }
