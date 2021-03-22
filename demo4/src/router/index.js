@@ -8,55 +8,114 @@ import FaceOne from '@/components/container/FaceOne'
 import Index from '@/components/Index'
 import AnalysisIndex from '@/components/analysis/AnalysisIndex'
 import AddAnalysis from '@/components/analysis/AddAnalysis'
+import Login from '@/components/login/login'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   routes: [
     {
       path: '/',
-      redirect: '/index'
+      redirect: '/index',
+      meta: {
+        requireAuth: true,
+        keepAlive: true
+      }
+    },
+    {
+      path: '/login',
+      component: Login,
+      name: 'login',
+      keepAlive: false
     },
     {
       path: '/index',
-      name: 'Index',
-      component:Index
+      component: Index,
+      name: 'index',
+      meta: {
+        requireAuth: true,
+        keepAlive: true
+      }
     },
     {
       path:'/progress',
       name:'Progress',
-      component:Progress
+      component:Progress,
+      meta: {
+        keepAlive: true
+      }
     },
     {
       path:'/home',
       name:'Home',
-      component:Home
+      component:Home,
+      meta: {
+        keepAlive: true
+      }
     },
     {
       path:'/list',
       name: 'List',
-      component:List
+      component:List,
+      meta: {
+        keepAlive: true
+      }
     },
     {
-    path:'/information',
-    name: 'InformationForm',
-    component:Information
-  },  {
-    path:'/faceOne',
-    name: 'FaceOne',
-    component:FaceOne
-  }, {
-    path:'/analysisIndex',
-    name: 'AnalysisIndex',
-    component:AnalysisIndex
-  },
-  {
-    path:'/addAnalysis',
-    name: 'AddAnalysis',
-    component:AddAnalysis
-  }
-
-
-
+      path:'/information',
+      name: 'InformationForm',
+      component:Information,
+      meta: {
+        keepAlive: true
+      }
+    },  {
+      path:'/faceOne',
+      name: 'FaceOne',
+      component:FaceOne,
+      meta: {
+        keepAlive: true
+      }
+    }, {
+      path:'/analysisIndex',
+      name: 'AnalysisIndex',
+      component:AnalysisIndex,
+      meta: {
+        keepAlive: true
+      }
+    },
+    {
+      path:'/addAnalysis',
+      name: 'AddAnalysis',
+      component:AddAnalysis,
+      meta: {
+        keepAlive: true
+      }
+    }
   ]
+})
+
+export default router
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.requireAuth) { // 判断该路由是否需要登录权限
+    if (sessionStorage.getItem("token") == 'true') { // 判断本地是否存在token
+      console.log('1')
+      next()
+    } else {
+      console.log('2')
+      // 未登录,跳转到登陆页面
+      next({
+        path: '/login'
+      })
+    }
+  } else {
+    console.log('3')
+    if(sessionStorage.getItem("token") == 'true'){
+      console.log('4')
+      next('/index');
+    }else{
+      console.log('5')
+      next();
+    }
+  }
 })

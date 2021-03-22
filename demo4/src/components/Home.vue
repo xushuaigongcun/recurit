@@ -1,15 +1,19 @@
 <template>
-  <el-container>
-  <el-header><Photo /> </el-header>
-  <el-container>
-    <el-aside width="200px"><Menu /></el-aside>
-    <el-container>
-      <el-main><router-view /></el-main>
+  <div style="height: 100%;width: 100%;">
+    <el-container v-if="$route.meta.keepAlive">
+      <el-header><Photo /> </el-header>
+      <el-container>
+        <el-aside width="200px"><Menu /></el-aside>
+        <el-container>
+          <el-main><router-view /></el-main>
+        </el-container>
+      </el-container>
     </el-container>
-  </el-container>
-</el-container>
+    <router-view v-if="!$route.meta.keepAlive"/>
+  </div>
 </template>
 <style>
+  @import '../assets/style/common.scss';
   .el-header {
     background-color: #B3C0D1;
     color: #333;
