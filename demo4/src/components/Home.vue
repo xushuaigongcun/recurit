@@ -20,31 +20,29 @@
     text-align: center;
     height: 500px !important;
   }
-  
+
   .el-aside {
     line-height: 500px;
   }
-  
+
   .el-main {
-  
+
     text-align: center;
 
   }
-  
+
   body > .el-container {
     margin-bottom: 40px;
   }
-  
- 
+
+
 </style>
 <script>
 import Menu from './container/Menu'
-import Progress from './container/Progress'
-import InformationForm from './container/InformationForm'
 import Photo from './container/Photo'
   export default {
-  components: {Menu , Progress,InformationForm,Photo},
+  components: {Menu,Photo},
   name:'Home'
- 
+
   };
 </script>

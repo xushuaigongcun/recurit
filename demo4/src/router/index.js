@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/components/Home'
-import Progress from '@/components/Container/Progress'
+import Progress from '@/components/container/Progress'
 import List from '@/components/container/List'
-import Infomation from '@/components/container/InformationForm'
+import Information from '@/components/container/InformationForm'
 import FaceOne from '@/components/container/FaceOne'
 import Index from '@/components/Index'
 import AnalysisIndex from '@/components/analysis/AnalysisIndex'
@@ -39,8 +39,8 @@ export default new Router({
     },
     {
     path:'/information',
-    name: 'Infomation',
-    component:Infomation
+    name: 'InformationForm',
+    component:Information
   },  {
     path:'/faceOne',
     name: 'FaceOne',

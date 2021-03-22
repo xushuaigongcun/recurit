@@ -11,7 +11,7 @@
           <span>信息录入</span>
         </template>
         <el-menu-item-group >
-          <router-link to='/progress' target="_blank" >
+          <router-link to='/progress'>
           <el-menu-item >信息录入</el-menu-item>
           </router-link>
           <el-menu-item index="/list">查看录入人员信息</el-menu-item>
@@ -38,7 +38,7 @@
           <el-menu-item index="1-4-1">选项1</el-menu-item>
         </el-submenu>
       </el-submenu>
-     
+
 
       <el-menu-item index="3" disabled>
         <i class="el-icon-document"></i>

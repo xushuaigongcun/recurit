@@ -6,7 +6,7 @@
         </el-steps>
     </div>
     <div style="margin-top:50px" v-if="active==0">
-         <InformationForm />
+         <information-form />
     </div>
     <el-button style="margin-top: 12px; " @click="next" align-center>下一步</el-button>
  </div>
@@ -60,13 +60,13 @@ export default {
         .then(successResponse=>{
             this.tableData=successResponse.data;
             console.log(this.tableData)});
-        
+
         },
          next() {
         if (this.active++ > this.tableData.length-1) this.active = 0;
       }
-        
+
     }
-     
+
 }
 </script>
