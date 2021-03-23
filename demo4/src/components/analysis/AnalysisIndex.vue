@@ -1,5 +1,69 @@
 <template>
   <div>
+    <el-row class="search-form">
+      <el-form size="mini" :inline="true" ref="searchForm" :model="searchForm" label-width="80px">
+        <el-row>
+          <el-col :span="8">
+            <el-form-item>
+              <el-input v-model="searchForm.demandNumber">
+                <span slot="prefix" class="el-icon-edit">需求编号</span>
+              </el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item>
+              <el-select class="select-slot" v-model="searchForm.projectName"
+              filterable placeholder="请选择">
+                <span slot="prefix" class="el-icon-collection-tag"> 项目名称</span>
+                <el-option
+                  v-for="item in searchForm.projectNameList"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.id">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="8">
+            <el-form-item>
+              <el-select class="select-slot" v-model="searchForm.customerName"
+              filterable placeholder="请选择">
+                <span slot="prefix" class="el-icon-collection-tag"> 客户名称</span>
+                <el-option
+                  v-for="item in searchForm.customerNameList"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.id">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="16">
+            <el-form-item>
+              <el-col :span="11">
+                <el-date-picker type="date" placeholder="开始日期 " v-model="searchForm.startDate" style="width: 100%;"></el-date-picker>
+              </el-col>
+              <el-col class="line" :span="2">-</el-col>
+              <el-col :span="11">
+                <el-date-picker type="date" placeholder="结束日期" v-model="searchForm.endDate" style="width: 100%;"></el-date-picker>
+              </el-col>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row style="text-align: center;">
+          <el-form-item>
+            <el-button type="primary" @click="goSearch">搜索</el-button>
+          </el-form-item>
+        </el-row>
+      </el-form>
+    </el-row>
+    <el-row style="text-align:left;padding-left: 20px;">
+      <el-button @click="newDemand" size="mini">新建需求</el-button>
+    </el-row>
+
     <!-- 需求信息列表 -->
     <el-row v-if="analysis!==undefined && analysis.length>0">
       <el-col :span="6" v-for="(tableData, index) in analysis" :key="index">
@@ -58,9 +122,9 @@
       </el-col>
     </el-row>
 
-    <!-- 需求详情 -->
+    <!-- 岗位详情 弹框 -->
     <el-dialog
-      title="需求详情"
+      title="岗位详情"
       :visible.sync="dialogDetailVisible"
       width="800"
       height="100px"
@@ -564,6 +628,17 @@
     }
   }
 }
+.search-form{
+  text-align: left;
+  padding-left: 20px;
+  .line{
+    text-align: center;
+  }
+}
+.search-form >>> .el-input--prefix .el-input__inner{
+  padding-left: 80px;
+  text-align: right;
+}
 </style>
 <script>
 export default {
@@ -651,12 +726,25 @@ export default {
       formLabelWidth: "120px",
       dialogDetailVisible: false, //需求详情
       detailData: [],//详情表格列表
+      searchForm: {//头部搜索
+        demandNumber: '',
+        projectName: '',
+        projectNameList: [],
+        customerName: '',
+        customerNameList: [],
+        startDate: '',
+        endDate: '',
+      }
     };
   },
   mounted() {
     this.load();
   },
   methods: {
+    // 点击新建需求
+    newDemand(){
+      this.$router.push({path:'/addAnalysis',query:{type:'new'}})
+    },
     // 点击详情
     detailInfo(list) {
       this.detailData = list
@@ -796,6 +884,15 @@ export default {
         case 3:
           return "stausBackgroundD";
       }
+    },
+    // 搜索
+    goSearch(){
+        //搜索参数
+        // this.searchForm.demandNumber
+        // this.searchForm.projectName
+        // this.searchForm.customerName
+        // this.searchForm.startDate
+        // this.searchForm.endDate
     },
   },
 };
