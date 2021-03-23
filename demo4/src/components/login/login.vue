@@ -79,7 +79,7 @@ export default {
           //   userPassword: this.formLogin.password,
           //   to: this.$route.query.redirect || '/'
           // })
-          sessionStorage.setItem("token", 'true');
+          localStorage.setItem("token", 'true');
           this.$router.push({path: "/index"});
         } else {
           // 登录表单校验失败

@@ -18,7 +18,7 @@ export default {
   },
   methods: {
     loginOut(){
-      sessionStorage.setItem("token", 'false');
+      localStorage.setItem("token", 'false');
       this.$router.push("/login");
     }
   }

@@ -26,7 +26,9 @@ const router = new Router({
       path: '/login',
       component: Login,
       name: 'login',
-      keepAlive: false
+      meta: {
+        keepAlive: false
+      }
     },
     {
       path: '/index',
@@ -42,6 +44,7 @@ const router = new Router({
       name:'Progress',
       component:Progress,
       meta: {
+        requireAuth: true,
         keepAlive: true
       }
     },
@@ -50,6 +53,7 @@ const router = new Router({
       name:'Home',
       component:Home,
       meta: {
+        requireAuth: true,
         keepAlive: true
       }
     },
@@ -58,6 +62,7 @@ const router = new Router({
       name: 'List',
       component:List,
       meta: {
+        requireAuth: true,
         keepAlive: true
       }
     },
@@ -66,6 +71,7 @@ const router = new Router({
       name: 'InformationForm',
       component:Information,
       meta: {
+        requireAuth: true,
         keepAlive: true
       }
     },  {
@@ -73,6 +79,7 @@ const router = new Router({
       name: 'FaceOne',
       component:FaceOne,
       meta: {
+        requireAuth: true,
         keepAlive: true
       }
     }, {
@@ -80,6 +87,7 @@ const router = new Router({
       name: 'AnalysisIndex',
       component:AnalysisIndex,
       meta: {
+        requireAuth: true,
         keepAlive: true
       }
     },
@@ -88,6 +96,7 @@ const router = new Router({
       name: 'AddAnalysis',
       component:AddAnalysis,
       meta: {
+        requireAuth: true,
         keepAlive: true
       }
     }
@@ -98,7 +107,7 @@ export default router
 
 router.beforeEach((to, from, next) => {
   if (to.meta.requireAuth) { // 判断该路由是否需要登录权限
-    if (sessionStorage.getItem("token") == 'true') { // 判断本地是否存在token
+    if (localStorage.getItem("token") == 'true') { // 判断本地是否存在token
       next()
     } else {
       // 未登录,跳转到登陆页面
@@ -107,7 +116,7 @@ router.beforeEach((to, from, next) => {
       })
     }
   } else {
-    if(sessionStorage.getItem("token") == 'true'){
+    if(localStorage.getItem("token") == 'true'){
       next('/index');
     }else{
       next();
