@@ -753,13 +753,11 @@ export default {
     load() {
       this.$axios.get("/analysis").then((successResponse) => {
         this.analysis = successResponse.data;
-        console.log(this.analysis);
       });
     },
     findData(tableData) {
       this.dialogTableVisible = true;
       this.ruleForm = tableData;
-      console.log(this.ruleForm);
     },
     async getCustorm() {
       const { programmId } = this.ruleForm;
@@ -770,7 +768,6 @@ export default {
           this.ruleForm.custormName = successResponse.data.custormName;
           this.ruleForm.deptId = successResponse.data.deptId;
           this.ruleForm.deptName = successResponse.data.deptName;
-          console.log(this.ruleForm);
         });
     },
     submitForm(formName) {
@@ -787,12 +784,9 @@ export default {
     job() {
       this.$axios.get("/job/").then((successResponse) => {
         this.jobs = successResponse.data;
-        console.log(this.jobs);
       });
     },
     save() {
-      console.log(this.ruleForm);
-
       this.$axios.put("/analysis", this.ruleForm).then((successResponse) => {
         if (successResponse.data.code == 200) {
           alert("更新成功");
@@ -804,10 +798,8 @@ export default {
     handleEdit(analysisIndex) {
       this.form = analysisIndex;
       this.dialogFormVisible = true;
-      console.log(this.form);
     },
     handleDelete(analysisIndex) {
-      console.log(analysisIndex.analysisId);
       alert("确定要删除吗，删除后不可恢复");
       this.$axios
         .delete("/recurit/" + analysisIndex.analysisId)
@@ -823,9 +815,7 @@ export default {
       this.$axios.get("/programm/programm").then((successResponse) => {
         if (successResponse.data.code == 200) {
           this.programms = successResponse.data.data;
-          console.log(this.programms);
         } else {
-          console.log(successResponse);
         }
       });
     },
@@ -841,14 +831,7 @@ export default {
       });
     },
     add(tableData) {
-      console.log(tableData);
       this.addForm.demandNumber = tableData.demandNumber;
-      console.log(
-        this.addForm.demandNumber +
-          "====================" +
-          this.addForm.analysisId
-      );
-      console.log(this.addForm);
       this.dialogAddFormVisible = true;
     },
     addAnalysis() {
@@ -868,7 +851,6 @@ export default {
             });
         } else {
           this.dialogAddFormVisible = false;
-          console.log("error submit!!");
           return false;
         }
       });

@@ -289,7 +289,7 @@
 		</div>
 	</div>
 </template>
-  
+
 
 <script>
 export default {
@@ -390,7 +390,6 @@ export default {
 	},
 	methods: {
 		handleCommand(command) {
-			console.log(command)
 			this.viewFlag = command
 		},
 		getSkill() {
@@ -400,11 +399,9 @@ export default {
 					this.ruleForm.skills1 = successResponse.data
 					// this.skills1 = successResponse.data;
 					//console.log(this.ruleForm.skills1);
-					console.log(this.ruleForm.skills1)
 				})
 		},
 		onSubmit(forName) {
-			console.log(this.ruleForm)
 			//校验表单
 			this.$refs[forName].validate((valid) => {
 				if (valid) {
@@ -422,7 +419,6 @@ export default {
 				.then((successResponse) => {
 					this.minSalary = successResponse.data
 					this.maxSalary = successResponse.data
-					console.log(this.minSalary)
 				})
 		},
 		work() {
@@ -430,7 +426,6 @@ export default {
 				.get('/directionary/dir?directionId=3')
 				.then((successResponse) => {
 					this.works = successResponse.data
-					console.log(this.works)
 				})
 		},
 		origin() {
@@ -438,7 +433,6 @@ export default {
 				.get('/directionary/dir?directionId=2')
 				.then((successResponse) => {
 					this.origins = successResponse.data
-					console.log(this.origins)
 				})
 		},
 		checkPhone() {
@@ -447,7 +441,6 @@ export default {
 				.get('/talentPool/checkPhone?telephone=' + telephone)
 				.then((successResponse) => {
 					this.msgphone = successResponse.data
-					console.log(this.msgphone.msg)
 				})
 		},
 		checkIdentified() {
@@ -456,14 +449,12 @@ export default {
 				.get('/talentPool/checkIdentified?identified=' + identified)
 				.then((successResponse) => {
 					this.msg = successResponse.data.msg
-					console.log(this.msg)
 				})
 		},
 		load() {
 			this.$axios.get('/talentPool/look').then((successResponse) => {
 				this.tableData = successResponse.data
 				this.skills = this.tableData
-				console.log(this.tableData)
 			})
 		},
 		genderConvert(row, index) {
@@ -474,7 +465,6 @@ export default {
 			}
 		},
 		flagConvert(row, index) {
-			console.log(row)
 			if (row.informationEntity != null) {
 				if (row.informationEntity.flag == 0) {
 					return '否'

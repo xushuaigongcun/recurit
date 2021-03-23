@@ -67,8 +67,8 @@
   </el-form-item>
 
   <el-form-item>
-    <el-select v-model="ruleForm.maxSalary" placeholder="最高期望薪资">   
-      <el-option :label="item.className" :value="item.className" v-for="item in maxSalary" :key='item.classId'></el-option>    
+    <el-select v-model="ruleForm.maxSalary" placeholder="最高期望薪资">
+      <el-option :label="item.className" :value="item.className" v-for="item in maxSalary" :key='item.classId'></el-option>
      </el-select>
   </el-form-item>
 </el-row>
@@ -83,7 +83,7 @@
     <el-button align-center>取消</el-button>
   </el-form-item>
  </el-row>
-  
+
 </el-form>
 </div>
 </template>
@@ -91,7 +91,7 @@
 .el-form-item--mini .el-form-item__content, .el-form-item--mini .el-form-item__label {
     line-height: 30px;
 }
-.el-form--inline .el-form-item { 
+.el-form--inline .el-form-item {
     margin-right: 10px;
     vertical-align: top;
 }
@@ -125,13 +125,13 @@
           //   skillName:''
           // },
           skills1:[],
-          
+
           minSalary:'',
           maxSalary:'',
           origin:'',
           work:'',
           wechat:''
-          
+
         },
         skills1:[],
         minSalary:[],
@@ -167,7 +167,7 @@
             { required: true, message: '请输入毕业学校', trigger: 'blur' },
            // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
           ],
-          entryPeople: [ 
+          entryPeople: [
             { required: true, message: '请输入录入人', trigger: 'blur' },
            // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
           ],
@@ -183,10 +183,9 @@
         },
       };
     },
-    
+
     methods: {
       onSubmit(forName) {
-        console.log(this.ruleForm);
         //校验表单
         this.$refs[forName].validate((valid) => {
           if (valid) {
@@ -196,7 +195,7 @@
             alert('提交错误，请查看是否不满足校验规则');
             return false;
           }
-        }); 
+        });
       },
         //提交表单给后台
       sendform() {
@@ -211,55 +210,49 @@
             skillsp.skillName = i;
           // this.sizeForm.skills.push(skillsp);
           skills.push(skillsp);
-          console.log(skills);
-          
         }
-        console.log(skillsp);
          this.$axios.post('/talentPool/save',{
           talentName,identified,educationBackground,wechat,
           gender,telephone,graduationSchool,address,entryPeople,recuritPeople,
           graduationTime,skills,minSalary,maxSalary,origin,workTime
           })
         .then(successResponse=>{
-          console.log(successResponse);
           if(successResponse.data.code==200){
-            
-            this.$router.push({ path:'/list'});
-            console.log(successResponse+"========")}
+
+            this.$router.push({ path:'/list'});}
             else{
               alert(successResponse.data.msg)
             }
           });
-            
+
       },
      load(){
         this.$axios.get('/directionary/dir?directionId=5')
         .then(successResponse=>{
             this.skills1=successResponse.data;
-            console.log(this.skills1)
             });
-        
+
         },
     salary(){
       this.$axios.get('/directionary/dir?directionId=1')
         .then(successResponse=>{
             this.minSalary=successResponse.data;
             this.maxSalary=successResponse.data;
-            console.log(this.minSalary)});
+            });
 
       },
        work(){
       this.$axios.get('/directionary/dir?directionId=3')
         .then(successResponse=>{
             this.works=successResponse.data;
-            console.log(this.works)});
+            });
 
       },
        origin(){
       this.$axios.get('/directionary/dir?directionId=2')
         .then(successResponse=>{
             this.origins=successResponse.data;
-            console.log(this.origins)});
+            });
 
       },
       checkPhone(){
@@ -267,18 +260,18 @@
       this.$axios.get('/talentPool/checkPhone?telephone='+telephone)
         .then(successResponse=>{
             this.msgphone=successResponse.data;
-            console.log(this.msgphone.msg)});
+            });
       } ,
        checkIdentified(){
         const{identified} = this.ruleForm
       this.$axios.get('/talentPool/checkIdentified?identified='+identified)
         .then(successResponse=>{
             this.msg=successResponse.data.msg;
-            console.log(this.msg)});
-      }, 
-    
+            });
+      },
+
     },
-    
+
   };
 </script>
 

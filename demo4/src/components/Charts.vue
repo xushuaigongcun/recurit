@@ -6,7 +6,6 @@
 export default {
     name : 'Echarts',
     mounted(){
-        console.log('xushuai');
         this.drawLine();
     },
     data:function(){
@@ -17,7 +16,6 @@ export default {
     props:['type'],
     methods:{
          drawLine(){
-             console.log('shuai');
         // 基于准备好的dom，初始化echarts实例
         let myChart = this.$echarts.init(this.$refs.myChart);
         // 绘制图表

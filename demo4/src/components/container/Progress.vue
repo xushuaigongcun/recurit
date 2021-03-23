@@ -59,7 +59,7 @@ export default {
         this.$axios.get('/process/operation')
         .then(successResponse=>{
             this.tableData=successResponse.data;
-            console.log(this.tableData)});
+            });
 
         },
          next() {

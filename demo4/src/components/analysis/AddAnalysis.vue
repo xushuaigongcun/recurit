@@ -336,7 +336,6 @@ export default {
         if (valid) {
           this.sendForm();
         } else {
-          console.log("error submit!!");
           return false;
         }
       });
@@ -346,7 +345,6 @@ export default {
         if (valid) {
           this.dialogFormVisible = false;
         } else {
-          console.log("error submit!!");
           return false;
         }
       });
@@ -388,9 +386,7 @@ export default {
         tableVo.recuritIds = i.recuritIds;
         tableVo.contact = i.contact;
         tableDataValue.push(tableVo);
-        console.log(tableDataValue);
       }
-      console.log(tableDataValue);
       this.$axios
         .post("/recurit", {
           programmId,
@@ -406,7 +402,6 @@ export default {
         })
         .then((successResponse) => {
           if (successResponse.data.code == 200) {
-            console.log(successResponse.data);
             alert(successResponse.data.msg);
             this.$router.push({ path: "/analysisIndex" });
           } else {
@@ -449,18 +444,15 @@ export default {
       table.recuritIds = recuritIds;
       table.contact = contact;
       this.tableDataValue.push(table);
-      console.log(table);
       // this.resetForm('form');
       this.form = {};
     },
     resetForm(formName) {
-      console.log(222);
       this.$refs[formName].resetFields();
     },
     job() {
       this.$axios.get("/job/").then((successResponse) => {
         this.jobs = successResponse.data;
-        console.log(this.jobs);
       });
     },
 
@@ -468,9 +460,7 @@ export default {
       this.$axios.get("/programm/programm").then((successResponse) => {
         if (successResponse.data.code == 200) {
           this.programms = successResponse.data.data;
-          console.log(this.programms);
         } else {
-          console.log(successResponse);
         }
       });
     },
@@ -483,7 +473,6 @@ export default {
           this.ruleForm.custormName = successResponse.data.custormName;
           this.ruleForm.deptId = successResponse.data.deptId;
           this.ruleForm.deptName = successResponse.data.deptName;
-          console.log(this.ruleForm);
         });
     },
     handleClick(row) {
