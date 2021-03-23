@@ -1,5 +1,6 @@
 <template>
-<div>首页
+<div>
+  <span @click="goHome" style="cursor: pointer;">首页</span>
   <el-dropdown size="small" class="avatar" trigger="click">
     <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
     <el-dropdown-menu slot="dropdown">
@@ -20,6 +21,9 @@ export default {
     loginOut(){
       localStorage.setItem("token", 'false');
       this.$router.push("/login");
+    },
+    goHome(){
+      this.$router.push("/index");
     }
   }
 }

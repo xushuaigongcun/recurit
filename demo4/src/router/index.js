@@ -9,6 +9,7 @@ import Index from '@/components/Index'
 import AnalysisIndex from '@/components/analysis/AnalysisIndex'
 import AddAnalysis from '@/components/analysis/AddAnalysis'
 import Login from '@/components/login/login'
+import Jurisdiction from '@/components/jurisdiction/jurisdiction'
 
 Vue.use(Router)
 
@@ -95,6 +96,15 @@ const router = new Router({
       path:'/addAnalysis',
       name: 'AddAnalysis',
       component:AddAnalysis,
+      meta: {
+        requireAuth: true,
+        keepAlive: true
+      }
+    },
+    {
+      path:'/jurisdiction',
+      name: 'jurisdiction',
+      component:Jurisdiction,
       meta: {
         requireAuth: true,
         keepAlive: true
