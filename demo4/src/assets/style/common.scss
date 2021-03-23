@@ -4,3 +4,13 @@ html,body{
   margin: 0;
   padding: 0;
 }
+.no-data{
+  margin: 30px 0;
+}
+.no-data span{
+  display: block;
+  color: #C0C4CC;
+}
+.no-data .el-image{
+  width: 200px;
+}

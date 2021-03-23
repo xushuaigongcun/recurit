@@ -64,12 +64,18 @@
       <el-button @click="newDemand" size="mini">新建需求</el-button>
     </el-row>
 
+    <el-tabs type="card" class="tabs-nav" v-model="activeName" @tab-click="handleClick">
+      <el-tab-pane label="部门维度" name="1"></el-tab-pane>
+      <el-tab-pane label="客户维度" name="2"></el-tab-pane>
+      <el-tab-pane label="项目维度" name="3"></el-tab-pane>
+    </el-tabs>
+
     <!-- 需求信息列表 -->
     <el-row v-if="analysis!==undefined && analysis.length>0">
       <el-col :span="6" v-for="(tableData, index) in analysis" :key="index">
         <el-card class="box-card">
           <div slot="header" class="clearfix" :class="addStatus(tableData)">
-            <span>需求信息</span>
+            <span>{{getTitle()}}</span>
           </div>
 
           <div class="demand-list">
@@ -120,6 +126,12 @@
           </div>
         </el-card>
       </el-col>
+    </el-row>
+    <el-row v-if="analysis===undefined || analysis.length==0">
+      <div class="no-data">
+        <el-image :src="require('../../assets/images/common/no-data.png')"></el-image>
+        <span>暂无数据</span>
+      </div>
     </el-row>
 
     <!-- 岗位详情 弹框 -->
@@ -639,6 +651,10 @@
   padding-left: 80px;
   text-align: right;
 }
+.tabs-nav{
+  padding-left: 20px;
+  margin-top: 30px;
+}
 </style>
 <script>
 export default {
@@ -734,7 +750,9 @@ export default {
         customerNameList: [],
         startDate: '',
         endDate: '',
-      }
+      },
+      activeName: '1',
+
     };
   },
   mounted() {
@@ -753,6 +771,9 @@ export default {
     load() {
       this.$axios.get("/analysis").then((successResponse) => {
         this.analysis = successResponse.data;
+      }).catch((err)=>{
+        this.analysis = []
+        this.$message.error('服务器内部错误')
       });
     },
     findData(tableData) {
@@ -875,6 +896,20 @@ export default {
         // this.searchForm.customerName
         // this.searchForm.startDate
         // this.searchForm.endDate
+    },
+    handleClick(){
+      this.load();//请求tabs列表接口
+      this.getTitle()//更新标题
+    },
+    getTitle(){
+      switch (this.activeName) {
+        case "1":
+          return "部门需求";
+        case "2":
+          return "客户需求";
+        case "3":
+          return "项目需求";
+      }
     },
   },
 };
