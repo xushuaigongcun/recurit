@@ -26,10 +26,14 @@
           <el-menu-item index="/analysisIndex">需求信息</el-menu-item>
           <el-menu-item index="/addAnalysis">添加新需求</el-menu-item>
         </el-submenu>
-        <el-menu-item index="/jurisdiction">
-          <i class="el-icon-s-tools"></i>
-          <span slot="title">权限管理</span>
-        </el-menu-item>
+        <el-submenu index="3">
+          <template slot="title">
+            <i class="el-icon-s-tools"></i>
+            <span>权限管理</span>
+          </template>
+          <el-menu-item index="/jurisdiction">菜单权限</el-menu-item>
+          <el-menu-item index="/">用户权限</el-menu-item>
+        </el-submenu>
       </el-menu>
     </el-col>
   </el-row>

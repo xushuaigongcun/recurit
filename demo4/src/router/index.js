@@ -117,7 +117,7 @@ export default router
 
 router.beforeEach((to, from, next) => {
   if (to.meta.requireAuth) { // 判断该路由是否需要登录权限
-    if (localStorage.getItem("token") == 'true') { // 判断本地是否存在token
+    if (localStorage.getItem("token") !== 'undefined' && localStorage.getItem("token")) { // 判断本地是否存在token
       next()
     } else {
       // 未登录,跳转到登陆页面
@@ -126,7 +126,7 @@ router.beforeEach((to, from, next) => {
       })
     }
   } else {
-    if(localStorage.getItem("token") == 'true'){
+    if(localStorage.getItem("token") !== 'undefined' && localStorage.getItem("token")){
       next('/index');
     }else{
       next();

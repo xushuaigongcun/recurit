@@ -73,20 +73,37 @@ export default {
     submit () {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
-          // 登录
-          // this.login({
-          //   userAccount: this.formLogin.username,
-          //   userPassword: this.formLogin.password,
-          //   to: this.$route.query.redirect || '/'
-          // })
-          localStorage.setItem("token", 'true');
-          this.$router.push({path: "/index"});
+          this.$axios.post('/login', {
+            userAccount: this.formLogin.username,
+            userPassword: this.formLogin.password
+          })
+          .then( (response)=> {
+            if(response.data.status == 1){
+              this.getUserInfo()
+              localStorage.setItem("token", response.data.token);
+              this.$router.push({path: "/index"});
+            }else{
+              this.$message.error('登录失败')
+            }
+          })
+          .catch( (err)=> {
+            this.$message.error('服务器错误')
+          });
         } else {
           // 登录表单校验失败
           this.$message.error('表单校验失败，请检查')
         }
       })
-    }
+    },
+    getUserInfo(){
+      this.$axios.get('/getStatus')
+      .then(function (response) {
+        console.log(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    },
   }
 }
 </script>

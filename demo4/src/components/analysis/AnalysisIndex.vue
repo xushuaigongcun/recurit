@@ -4,22 +4,22 @@
       <el-form size="mini" :inline="true" ref="searchForm" :model="searchForm" label-width="80px">
         <el-row>
           <el-col :span="8">
-            <el-form-item>
-              <el-input v-model="searchForm.demandNumber">
+            <el-form-item prop="demandNumber">
+              <el-input v-model="searchForm.demandNumber" placeholder="请输入">
                 <span slot="prefix" class="el-icon-edit">需求编号</span>
               </el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item>
+            <el-form-item prop="projectName">
               <el-select class="select-slot" v-model="searchForm.projectName"
               filterable placeholder="请选择">
                 <span slot="prefix" class="el-icon-collection-tag"> 项目名称</span>
                 <el-option
                   v-for="item in searchForm.projectNameList"
-                    :key="item.id"
-                    :label="item.name"
-                    :value="item.id">
+                    :key="item.programmId"
+                    :label="item.programmName"
+                    :value="item.programmName">
                 </el-option>
               </el-select>
             </el-form-item>
@@ -27,35 +27,44 @@
         </el-row>
         <el-row>
           <el-col :span="8">
-            <el-form-item>
+            <el-form-item prop="customerName">
               <el-select class="select-slot" v-model="searchForm.customerName"
               filterable placeholder="请选择">
                 <span slot="prefix" class="el-icon-collection-tag"> 客户名称</span>
                 <el-option
                   v-for="item in searchForm.customerNameList"
-                    :key="item.id"
-                    :label="item.name"
-                    :value="item.id">
+                    :key="item.custormId"
+                    :label="item.custormName"
+                    :value="item.custormName">
                 </el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="16">
-            <el-form-item>
-              <el-col :span="11">
-                <el-date-picker type="date" placeholder="开始日期 " v-model="searchForm.startDate" style="width: 100%;"></el-date-picker>
-              </el-col>
-              <el-col class="line" :span="2">-</el-col>
-              <el-col :span="11">
-                <el-date-picker type="date" placeholder="结束日期" v-model="searchForm.endDate" style="width: 100%;"></el-date-picker>
-              </el-col>
+            <el-form-item prop="startDate">
+              <el-date-picker
+              value-format="yyyy-MM-dd"
+              type="date"
+              placeholder="开始日期"
+              v-model="searchForm.startDate"
+              style="width: 100%;"></el-date-picker>
+            </el-form-item>
+            <span class="line">-</span>
+            <el-form-item prop="endDate">
+              <el-date-picker
+              value-format="yyyy-MM-dd"
+              type="date"
+              placeholder="结束日期"
+              v-model="searchForm.endDate"
+              style="width: 100%;"></el-date-picker>
             </el-form-item>
           </el-col>
         </el-row>
 
         <el-row style="text-align: center;">
           <el-form-item>
-            <el-button type="primary" @click="goSearch">搜索</el-button>
+            <el-button type="info" @click="resetSearch">重置</el-button>
+            <el-button type="primary" @click="goSearch">查询</el-button>
           </el-form-item>
         </el-row>
       </el-form>
@@ -65,9 +74,10 @@
     </el-row>
 
     <el-tabs type="card" class="tabs-nav" v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane label="部门维度" name="1"></el-tab-pane>
-      <el-tab-pane label="客户维度" name="2"></el-tab-pane>
-      <el-tab-pane label="项目维度" name="3"></el-tab-pane>
+      <el-tab-pane label="全部" name="1"></el-tab-pane>
+      <el-tab-pane label="部门维度" name="2"></el-tab-pane>
+      <el-tab-pane label="客户维度" name="3"></el-tab-pane>
+      <el-tab-pane label="项目维度" name="4"></el-tab-pane>
     </el-tabs>
 
     <!-- 需求信息列表 -->
@@ -645,6 +655,7 @@
   padding-left: 20px;
   .line{
     text-align: center;
+    margin-right: 10px;
   }
 }
 .search-form >>> .el-input--prefix .el-input__inner{
@@ -757,8 +768,28 @@ export default {
   },
   mounted() {
     this.load();
+    this.getCustormList();//客户列表
+    this.getProjectList();//项目列表
   },
   methods: {
+    //获取所有客户列表
+    getCustormList(){
+      this.$axios.get("/custorm/").then((res) => {
+        this.searchForm.customerNameList = res.data;
+      }).catch((err)=>{
+        this.searchForm.customerNameList = []
+        this.$message.error('服务器内部错误')
+      });
+    },
+    //获取所有项目列表
+    getProjectList(){
+      this.$axios.get("/programm/programm").then((res) => {
+        this.searchForm.projectNameList = res.data.data;
+      }).catch((err)=>{
+        this.searchForm.projectNameList = []
+        this.$message.error('服务器内部错误')
+      });
+    },
     // 点击新建需求
     newDemand(){
       this.$router.push({path:'/addAnalysis',query:{type:'new'}})
@@ -890,12 +921,30 @@ export default {
     },
     // 搜索
     goSearch(){
-        //搜索参数
-        // this.searchForm.demandNumber
-        // this.searchForm.projectName
-        // this.searchForm.customerName
-        // this.searchForm.startDate
-        // this.searchForm.endDate
+        this.$axios
+        .post("/analysis/getAnalysis", {
+          custormName: this.searchForm.customerName,
+          demandNumber: Number(this.searchForm.demandNumber),
+          endTime: this.searchForm.endDate,
+          programmName: this.searchForm.projectName,
+          startTime: this.searchForm.startDate
+        })
+        .then((successResponse) => {
+          if (successResponse.data.code == 200) {
+            this.analysis = successResponse.data.data
+          } else {
+            this.analysis = []
+            this.$message.error(successResponse.data.msg)
+          }
+        })
+        .catch( (err)=> {
+          this.analysis = []
+          this.$message.error('服务器错误')
+        });
+    },
+    // 重置搜索条件
+    resetSearch(){
+      this.$refs['searchForm'].resetFields();
     },
     handleClick(){
       this.load();//请求tabs列表接口
@@ -904,10 +953,12 @@ export default {
     getTitle(){
       switch (this.activeName) {
         case "1":
-          return "部门需求";
+          return "全部需求";
         case "2":
-          return "客户需求";
+          return "部门需求";
         case "3":
+          return "客户需求";
+        case "4":
           return "项目需求";
       }
     },

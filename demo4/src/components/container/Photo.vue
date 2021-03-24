@@ -19,8 +19,18 @@ export default {
   },
   methods: {
     loginOut(){
-      localStorage.setItem("token", 'false');
-      this.$router.push("/login");
+      this.$axios.post('/logout',{})
+      .then( (response)=> {
+        if(response.data.status == 1){
+          localStorage.setItem("token", '');
+          this.$router.push("/login");
+        }else{
+          this.$message.error('登出失败')
+        }
+      })
+      .catch( (err)=> {
+        this.$message.error('服务器错误')
+      });
     },
     goHome(){
       this.$router.push("/index");

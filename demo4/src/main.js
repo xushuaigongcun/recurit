@@ -12,6 +12,9 @@ Vue.use(ElementUI)
 // 引用axios，并设置基础URL为后端服务api地址
 var axios = require('axios')
 axios.defaults.baseURL = 'http://192.168.20.244:8084/'
+
+const token = localStorage.getItem('token');
+axios.defaults.headers['token'] = `${token}`;
 // 将API方法绑定到全局
 Vue.prototype.$axios = axios
 Vue.prototype.$echarts = echarts
