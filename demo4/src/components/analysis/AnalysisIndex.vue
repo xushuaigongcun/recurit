@@ -597,9 +597,6 @@
 .stausBackgroundD {
   background: gray;
 }
-.box-card {
-
-}
 .box-card >>> .el-card__header{
   padding: 0;
   .clearfix{
@@ -639,9 +636,6 @@
   clear: both;
 }
 
-.box-card {
-  /* width: 600px; */
-}
 .demand-list{
   text-align: left;
   .el-row{
@@ -811,19 +805,25 @@ export default {
     },
     //关闭、激活
     closeOrActivation(data){
-      let flag = data.flag==2?'0':'2'//flag： 2关闭，0激活
-      this.$axios.put("/analysis/updateAnalysis?demandNumber="+data.demandNumber+"&flag="+flag).then((successResponse) => {
-        this.$message({
-          type: 'success',
-          message: data.flag==2?"激活成功":'关闭成功'
-        })
-        //更新列表
-        this.load();//请求tabs列表接口
+      this.$confirm('确定'+(data.flag==2?"激活":'关闭')+'该需求?', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        let flag = data.flag==2?'0':'2'//flag： 2关闭，0激活
+        this.$axios.put("/analysis/updateAnalysis?demandNumber="+data.demandNumber+"&flag="+flag).then((successResponse) => {
+          this.$message({
+            type: 'success',
+            message: data.flag==2?"激活成功":'关闭成功'
+          })
+          //更新列表
+          this.load();//请求tabs列表接口
+        }).catch((err)=>{
+          this.analysis = []
+          this.$message.error('服务器内部错误')
+        });
       }).catch((err)=>{
-        this.analysis = []
-        this.$message.error('服务器内部错误')
       });
-
     },
     load() {
       this.$axios.get("/analysis").then((successResponse) => {
@@ -990,28 +990,35 @@ export default {
     },
     //删除需求
     deleteDemand(data){
-      this.$axios
-      .delete(`/analysis/deleteAnalysis`,{
-        params: {
-          demandNumber: data.demandNumber
-        }
-      })
-      .then((successResponse) => {
-        if (successResponse.data.code == 200) {
-          this.$message({
-            type: 'success',
-            message: '删除成功'
-          })
-          //更新列表
-          this.load();//请求tabs列表接口
-        } else {
+      this.$confirm('确定删除该需求?', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$axios
+        .delete(`/analysis/deleteAnalysis`,{
+          params: {
+            demandNumber: data.demandNumber
+          }
+        })
+        .then((successResponse) => {
+          if (successResponse.data.code == 200) {
+            this.$message({
+              type: 'success',
+              message: '删除成功'
+            })
+            //更新列表
+            this.load();//请求tabs列表接口
+          } else {
+            // this.analysis = []
+            this.$message.error(successResponse.data.msg)
+          }
+        })
+        .catch( (err)=> {
           // this.analysis = []
-          this.$message.error(successResponse.data.msg)
-        }
-      })
-      .catch( (err)=> {
-        // this.analysis = []
-        this.$message.error('服务器错误')
+          this.$message.error('服务器错误')
+        });
+      }).catch(() => {
       });
     },
   },
