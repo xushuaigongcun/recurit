@@ -19,11 +19,15 @@ export default {
   },
   methods: {
     loginOut(){
+      // localStorage.removeItem("token");
+      // this.$router.push("/login");
+      // this.$axios.defaults.headers['token'] = `${localStorage.getItem('token')}`;
       this.$axios.post('/logout',{})
       .then( (response)=> {
-        if(response.data.status == 1){
-          localStorage.setItem("token", '');
+        if(response.data.code == 200){
+          localStorage.removeItem("token");
           this.$router.push("/login");
+          this.$axios.defaults.headers['token'] = `${localStorage.getItem('token')}`;
         }else{
           this.$message.error('登出失败')
         }

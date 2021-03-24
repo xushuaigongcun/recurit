@@ -86,6 +86,7 @@
         <el-card class="box-card">
           <div slot="header" class="clearfix" :class="addStatus(tableData)">
             <span>{{getTitle()}}</span>
+            <i class="el-icon-close del-demand" title="删除" @click="deleteDemand(tableData)"></i>
           </div>
 
           <div class="demand-list">
@@ -132,6 +133,7 @@
               <el-button size="mini" type="text" icon="el-icon-edit" @click="findData(tableData)"> 修改</el-button>
               <el-button size="mini" type="text" icon="el-icon-circle-plus-outline" @click="add(tableData)"> 添加</el-button>
               <el-button size="mini" type="text" icon="el-icon-tickets" @click="detailInfo(tableData.list)"> 详情 </el-button>
+              <el-button size="mini" type="text" icon="el-icon-circle-close" @click="closeOrActivation(tableData)"> {{tableData.flag==2?"激活":"关闭"}} </el-button>
             </el-row>
           </div>
         </el-card>
@@ -602,6 +604,7 @@
   padding: 0;
   .clearfix{
     padding: 10px 0;
+    position: relative;
   }
 }
 .el-card {
@@ -665,6 +668,13 @@
 .tabs-nav{
   padding-left: 20px;
   margin-top: 30px;
+}
+.del-demand{
+  position: absolute;
+  right: 8px;
+  top: 11px;
+  font-size: 20px;
+  cursor: pointer;
 }
 </style>
 <script>
@@ -798,6 +808,22 @@ export default {
     detailInfo(list) {
       this.detailData = list
       this.dialogDetailVisible = true;
+    },
+    //关闭、激活
+    closeOrActivation(data){
+      let flag = data.flag==2?'0':'2'//flag： 2关闭，0激活
+      this.$axios.put("/analysis/updateAnalysis?demandNumber="+data.demandNumber+"&flag="+flag).then((successResponse) => {
+        this.$message({
+          type: 'success',
+          message: data.flag==2?"激活成功":'关闭成功'
+        })
+        //更新列表
+        this.load();//请求tabs列表接口
+      }).catch((err)=>{
+        this.analysis = []
+        this.$message.error('服务器内部错误')
+      });
+
     },
     load() {
       this.$axios.get("/analysis").then((successResponse) => {
@@ -961,6 +987,32 @@ export default {
         case "4":
           return "项目需求";
       }
+    },
+    //删除需求
+    deleteDemand(data){
+      this.$axios
+      .delete(`/analysis/deleteAnalysis`,{
+        params: {
+          demandNumber: data.demandNumber
+        }
+      })
+      .then((successResponse) => {
+        if (successResponse.data.code == 200) {
+          this.$message({
+            type: 'success',
+            message: '删除成功'
+          })
+          //更新列表
+          this.load();//请求tabs列表接口
+        } else {
+          // this.analysis = []
+          this.$message.error(successResponse.data.msg)
+        }
+      })
+      .catch( (err)=> {
+        // this.analysis = []
+        this.$message.error('服务器错误')
+      });
     },
   },
 };

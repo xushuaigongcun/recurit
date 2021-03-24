@@ -21,7 +21,7 @@
               </el-input>
             </el-form-item>
 
-            <el-button size="default" @click="submit" type="primary" class="button-login">
+            <el-button :disabled="unableLogin" size="default" @click="submit" type="primary" class="button-login">
               登录
             </el-button>
           </el-form>
@@ -64,6 +64,7 @@ export default {
           }
         ]
       },
+      unableLogin: false,
     }
   },
   methods: {
@@ -73,20 +74,24 @@ export default {
     submit () {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
+          this.unableLogin = true
           this.$axios.post('/login', {
             userAccount: this.formLogin.username,
             userPassword: this.formLogin.password
           })
           .then( (response)=> {
+            this.unableLogin = false
             if(response.data.status == 1){
-              this.getUserInfo()
               localStorage.setItem("token", response.data.token);
+              this.$axios.defaults.headers['token'] = `${localStorage.getItem('token')}`;
+              this.getUserInfo()
               this.$router.push({path: "/index"});
             }else{
               this.$message.error('登录失败')
             }
           })
           .catch( (err)=> {
+            this.unableLogin = false
             this.$message.error('服务器错误')
           });
         } else {
@@ -98,10 +103,10 @@ export default {
     getUserInfo(){
       this.$axios.get('/getStatus')
       .then(function (response) {
-        console.log(response.data);
+        // console.log(response.data);
       })
       .catch(function (error) {
-        console.log(error);
+        // console.log(error);
       });
     },
   }
