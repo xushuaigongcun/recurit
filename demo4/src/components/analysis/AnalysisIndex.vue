@@ -1,16 +1,17 @@
 <template>
   <div>
+    <!-- 头部 form表单查询 -->
     <el-row class="search-form">
       <el-form size="mini" :inline="true" ref="searchForm" :model="searchForm" label-width="80px">
         <el-row>
-          <el-col :span="8">
+          <!-- <el-col :span="8"> -->
             <el-form-item prop="demandNumber">
               <el-input v-model="searchForm.demandNumber" placeholder="请输入">
                 <span slot="prefix" class="el-icon-edit">需求编号</span>
               </el-input>
             </el-form-item>
-          </el-col>
-          <el-col :span="8">
+          <!-- </el-col>
+          <el-col :span="8"> -->
             <el-form-item prop="projectName">
               <el-select class="select-slot" v-model="searchForm.projectName"
               filterable placeholder="请选择">
@@ -23,10 +24,8 @@
                 </el-option>
               </el-select>
             </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="8">
+          <!-- </el-col>
+          <el-col :span="8"> -->
             <el-form-item prop="customerName">
               <el-select class="select-slot" v-model="searchForm.customerName"
               filterable placeholder="请选择">
@@ -39,8 +38,11 @@
                 </el-option>
               </el-select>
             </el-form-item>
-          </el-col>
-          <el-col :span="16">
+          </el-row>
+          <el-row>
+          <!-- </el-col>
+
+          <el-col :span="12"> -->
             <el-form-item prop="startDate">
               <el-date-picker
               value-format="yyyy-MM-dd"
@@ -58,7 +60,7 @@
               v-model="searchForm.endDate"
               style="width: 100%;"></el-date-picker>
             </el-form-item>
-          </el-col>
+          <!-- </el-col> -->
         </el-row>
 
         <el-row style="text-align: center;">
@@ -69,10 +71,13 @@
         </el-row>
       </el-form>
     </el-row>
+
+    <!-- 新建 -->
     <el-row style="text-align:left;padding-left: 20px;">
       <el-button @click="newDemand" size="mini">新建需求</el-button>
     </el-row>
 
+    <!-- tabs -->
     <el-tabs type="card" class="tabs-nav" v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="全部" name="1"></el-tab-pane>
       <el-tab-pane label="部门维度" name="2"></el-tab-pane>
@@ -584,93 +589,6 @@
     </el-dialog>
   </div>
 </template>
-<style lang="scss" scoped>
-.stausBackgroundA {
-  background: #409EFF;
-}
-.stausBackgroundB {
-  background: #67C23A;
-}
-.stausBackgroundC {
-  background: #F56C6C;
-}
-.stausBackgroundD {
-  background: gray;
-}
-.box-card >>> .el-card__header{
-  padding: 0;
-  .clearfix{
-    padding: 10px 0;
-    position: relative;
-  }
-}
-.el-card {
-  border: 1px solid #ebeef5;
-  background-color: #fff;
-  color: #fff;
-  -webkit-transition: 0.3s;
-  transition: 0.3s;
-  margin-top: 30px;
-  margin: 20px;
-}
-.el-card,
-.el-message {
-  border-radius: 4px;
-  overflow: hidden;
-}
-
-.text {
-  font-size: 14px;
-}
-
-.item {
-  margin-bottom: 18px;
-}
-
-.clearfix:before,
-.clearfix:after {
-  display: table;
-  content: "";
-}
-.clearfix:after {
-  clear: both;
-}
-
-.demand-list{
-  text-align: left;
-  .el-row{
-    span{
-      color: #303133;
-    }
-    span:first-child{
-      color: #606266;
-    }
-  }
-}
-.search-form{
-  text-align: left;
-  padding-left: 20px;
-  .line{
-    text-align: center;
-    margin-right: 10px;
-  }
-}
-.search-form >>> .el-input--prefix .el-input__inner{
-  padding-left: 80px;
-  text-align: right;
-}
-.tabs-nav{
-  padding-left: 20px;
-  margin-top: 30px;
-}
-.del-demand{
-  position: absolute;
-  right: 8px;
-  top: 11px;
-  font-size: 20px;
-  cursor: pointer;
-}
-</style>
 <script>
 export default {
   data() {
@@ -766,7 +684,7 @@ export default {
         startDate: '',
         endDate: '',
       },
-      activeName: '1',
+      activeName: '1',//默认选中
 
     };
   },
@@ -1024,3 +942,90 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+.stausBackgroundA {
+  background: #409EFF;
+}
+.stausBackgroundB {
+  background: #67C23A;
+}
+.stausBackgroundC {
+  background: #F56C6C;
+}
+.stausBackgroundD {
+  background: gray;
+}
+.box-card >>> .el-card__header{
+  padding: 0;
+  .clearfix{
+    padding: 10px 0;
+    position: relative;
+  }
+}
+.el-card {
+  border: 1px solid #ebeef5;
+  background-color: #fff;
+  color: #fff;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+  margin-top: 30px;
+  margin: 20px;
+}
+.el-card,
+.el-message {
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.text {
+  font-size: 14px;
+}
+
+.item {
+  margin-bottom: 18px;
+}
+
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+}
+.clearfix:after {
+  clear: both;
+}
+
+.demand-list{
+  text-align: left;
+  .el-row{
+    span{
+      color: #303133;
+    }
+    span:first-child{
+      color: #606266;
+    }
+  }
+}
+.search-form{
+  text-align: left;
+  padding-left: 20px;
+  .line{
+    text-align: center;
+    margin-right: 10px;
+  }
+}
+.search-form >>> .el-input--prefix .el-input__inner{
+  padding-left: 80px;
+  text-align: right;
+}
+.tabs-nav{
+  padding-left: 20px;
+  margin-top: 30px;
+}
+.del-demand{
+  position: absolute;
+  right: 8px;
+  top: 11px;
+  font-size: 20px;
+  cursor: pointer;
+}
+</style>

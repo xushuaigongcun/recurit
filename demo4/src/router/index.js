@@ -10,6 +10,9 @@ import AnalysisIndex from '@/components/analysis/AnalysisIndex'
 import AddAnalysis from '@/components/analysis/AddAnalysis'
 import Login from '@/components/login/login'
 import Jurisdiction from '@/components/jurisdiction/jurisdiction'
+import MyDesk from '@/components/container/my-desk/index'
+import ResourcePool from '@/components/resource-pool/index'
+import CandidateManagement from '@/components/container/my-desk/candidate-management/index'
 
 Vue.use(Router)
 
@@ -109,7 +112,35 @@ const router = new Router({
         requireAuth: true,
         keepAlive: true
       }
-    }
+    },
+    {
+      path: '/mydesk/index',
+      name: 'MyDesk',
+      component: MyDesk,
+      meta: {
+        requireAuth: true,
+        keepAlive: true
+      }
+    },
+    {
+      path: '/resource-pool/index',
+      name: 'resource-pool',
+      component: ResourcePool,
+      meta: {
+        requireAuth: true,
+        keepAlive: true
+      }
+    },
+    {
+      path: '/candidate-management/index',
+      name: 'candidate-management',
+      component: CandidateManagement,
+      meta: {
+        requireAuth: true,
+        keepAlive: true
+      }
+    },
+
   ]
 })
 
