@@ -1,5 +1,6 @@
   <template>
 	<div>
+
 		<el-dropdown @command="handleCommand">
 			<span class="el-dropdown-link">
 				切换视图<i class="el-icon-arrow-down el-icon--right"></i>
@@ -452,7 +453,10 @@ export default {
 				})
 		},
 		load() {
-			this.$axios.get('/talentPool/look').then((successResponse) => {
+			this.$axios.post('/talentPool/look',{
+        pageNumber: 1,
+        pageSize: 10
+      }).then((successResponse) => {
 				this.tableData = successResponse.data
 				this.skills = this.tableData
 			})

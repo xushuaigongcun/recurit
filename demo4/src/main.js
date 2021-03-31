@@ -15,6 +15,8 @@ axios.defaults.baseURL = 'http://192.168.20.244:8084/'
 
 const token = localStorage.getItem('token');
 axios.defaults.headers['token'] = `${token}`;
+// axios.defaults.withCredentials = true
+
 
 // 将API方法绑定到全局
 Vue.prototype.$axios = axios

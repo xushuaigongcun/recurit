@@ -14,6 +14,8 @@
 </template>
 <style>
   @import '../assets/style/common.scss';
+</style>
+<style scoped>
   .el-header {
     background-color: #B3C0D1;
     color: #333;
@@ -27,12 +29,6 @@
 
   .el-aside {
     line-height: 500px;
-  }
-
-  .el-main {
-
-    text-align: center;
-
   }
 
   body > .el-container {

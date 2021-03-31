@@ -115,14 +115,14 @@
               label="工作岗位"
               :label-width="formLabelWidth"
               required
-              prop="jobName"
+              prop="jobId"
             >
-              <el-select v-model="form.jobName" placeholder="工作岗位">
+              <el-select v-model="form.jobId" placeholder="工作岗位">
                 <el-option
                   v-for="item in jobs"
                   :label="item.jobName"
                   :key="item.jobId"
-                  :value="item.jobName"
+                  :value="item.jobId"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -277,7 +277,7 @@ export default {
       jobs: "",
       form: {
         contact: "",
-        jobName: "",
+        jobId: "",
         address: "",
         jobDesc: "",
         startTime: "",
@@ -309,7 +309,7 @@ export default {
             trigger: "change",
           },
         ],
-        jobName: [
+        jobId: [
           { required: true, message: "工作不能为空", trigger: "change" },
         ],
         contact: [
@@ -376,7 +376,7 @@ export default {
           contact: "",
           demandDesc,
         };
-        tableVo.jobName = i.jobName;
+        tableVo.jobId = i.jobId;
         tableVo.address = i.address;
         tableVo.jobDesc = i.jobDesc;
         tableVo.startTime = i.startTime;
@@ -402,10 +402,16 @@ export default {
         })
         .then((successResponse) => {
           if (successResponse.data.code == 200) {
-            alert(successResponse.data.msg);
+            this.$message({
+              type: "success",
+              message: successResponse.data.msg
+            })
             this.$router.push({ path: "/analysisIndex" });
           } else {
-            alert("保存失败");
+           this.$message({
+              type: "error",
+              message: "保存失败"
+            })
           }
         });
     },
@@ -413,6 +419,7 @@ export default {
       this.addForm("form");
       const {
         jobName,
+        jobId,
         address,
         jobDesc,
         startTime,
@@ -435,6 +442,7 @@ export default {
         contact: "",
       };
       table.jobName = jobName;
+      table.jobId = jobId;
       table.address = address;
       table.jobDesc = jobDesc;
       table.startTime = startTime;

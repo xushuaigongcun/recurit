@@ -72,6 +72,10 @@ export default {
 
     // 提交登录信息
     submit () {
+      // localStorage.setItem("token", '123456asfsfergefgeer');
+      // this.$axios.defaults.headers['token'] = `${localStorage.getItem('token')}`;
+      // this.$router.push({path: "/index"});
+      // return
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
           this.unableLogin = true

@@ -4,77 +4,44 @@
     <el-row class="search-form">
       <el-form size="mini" :inline="true" ref="searchForm" :model="searchForm" label-width="80px">
         <el-row>
-          <!-- <el-col :span="8"> -->
-            <el-form-item prop="demandNumber">
-              <el-input v-model="searchForm.demandNumber" placeholder="请输入">
-                <span slot="prefix" class="el-icon-edit">需求编号</span>
+            <el-col :span="18">
+              <el-form-item prop="demandNumber">
+                <el-input clearable v-model="searchForm.demandNumber" placeholder="请输入">
+                  <span slot="prefix" class="el-icon-edit">需求编号</span>
+                </el-input>
+              </el-form-item>
+              <el-form-item prop="startDate">
+                <el-date-picker
+                clearable
+                value-format="yyyy-MM-dd"
+                type="date"
+                placeholder="开始日期"
+                v-model="searchForm.startDate"
+                style="width: 100%;"></el-date-picker>
+              </el-form-item>
+              <span class="line">-</span>
+              <el-form-item prop="endDate">
+                <el-date-picker
+                clearable
+                value-format="yyyy-MM-dd"
+                type="date"
+                placeholder="结束日期"
+                v-model="searchForm.endDate"
+                style="width: 100%;"></el-date-picker>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" icon="el-icon-search" @click="goSearch"></el-button>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-input class="search-last" size="mini" clearable v-model="searchName" placeholder="请输入搜索内容">
+                <span slot="suffix" style="cursor: pointer;" class="el-icon-search" @click="goSearchList"></span>
               </el-input>
-            </el-form-item>
-          <!-- </el-col>
-          <el-col :span="8"> -->
-            <el-form-item prop="projectName">
-              <el-select class="select-slot" v-model="searchForm.projectName"
-              filterable placeholder="请选择">
-                <span slot="prefix" class="el-icon-collection-tag"> 项目名称</span>
-                <el-option
-                  v-for="item in searchForm.projectNameList"
-                    :key="item.programmId"
-                    :label="item.programmName"
-                    :value="item.programmName">
-                </el-option>
-              </el-select>
-            </el-form-item>
-          <!-- </el-col>
-          <el-col :span="8"> -->
-            <el-form-item prop="customerName">
-              <el-select class="select-slot" v-model="searchForm.customerName"
-              filterable placeholder="请选择">
-                <span slot="prefix" class="el-icon-collection-tag"> 客户名称</span>
-                <el-option
-                  v-for="item in searchForm.customerNameList"
-                    :key="item.custormId"
-                    :label="item.custormName"
-                    :value="item.custormName">
-                </el-option>
-              </el-select>
-            </el-form-item>
-          </el-row>
-          <el-row>
-          <!-- </el-col>
-
-          <el-col :span="12"> -->
-            <el-form-item prop="startDate">
-              <el-date-picker
-              value-format="yyyy-MM-dd"
-              type="date"
-              placeholder="开始日期"
-              v-model="searchForm.startDate"
-              style="width: 100%;"></el-date-picker>
-            </el-form-item>
-            <span class="line">-</span>
-            <el-form-item prop="endDate">
-              <el-date-picker
-              value-format="yyyy-MM-dd"
-              type="date"
-              placeholder="结束日期"
-              v-model="searchForm.endDate"
-              style="width: 100%;"></el-date-picker>
-            </el-form-item>
-          <!-- </el-col> -->
-        </el-row>
-
-        <el-row style="text-align: center;">
-          <el-form-item>
-            <el-button type="info" @click="resetSearch">重置</el-button>
-            <el-button type="primary" @click="goSearch">查询</el-button>
-          </el-form-item>
+              <!-- 新建 -->
+              <el-button size="mini" style="float: right;" type="primary" @click="newDemand">新增</el-button>
+            </el-col>
         </el-row>
       </el-form>
-    </el-row>
-
-    <!-- 新建 -->
-    <el-row style="text-align:left;padding-left: 20px;">
-      <el-button @click="newDemand" size="mini">新建需求</el-button>
     </el-row>
 
     <!-- tabs -->
@@ -677,41 +644,37 @@ export default {
       detailData: [],//详情表格列表
       searchForm: {//头部搜索
         demandNumber: '',
-        projectName: '',
-        projectNameList: [],
-        customerName: '',
-        customerNameList: [],
         startDate: '',
-        endDate: '',
+        endDate: null,
       },
       activeName: '1',//默认选中
-
+      searchName: '',
     };
   },
   mounted() {
     this.load();
-    this.getCustormList();//客户列表
-    this.getProjectList();//项目列表
+    // this.getCustormList();//客户列表
+    // this.getProjectList();//项目列表
   },
   methods: {
-    //获取所有客户列表
-    getCustormList(){
-      this.$axios.get("/custorm/").then((res) => {
-        this.searchForm.customerNameList = res.data;
-      }).catch((err)=>{
-        this.searchForm.customerNameList = []
-        this.$message.error('服务器内部错误')
-      });
-    },
-    //获取所有项目列表
-    getProjectList(){
-      this.$axios.get("/programm/programm").then((res) => {
-        this.searchForm.projectNameList = res.data.data;
-      }).catch((err)=>{
-        this.searchForm.projectNameList = []
-        this.$message.error('服务器内部错误')
-      });
-    },
+    // //获取所有客户列表
+    // getCustormList(){
+    //   this.$axios.get("/custorm/").then((res) => {
+    //     this.searchForm.customerNameList = res.data;
+    //   }).catch((err)=>{
+    //     this.searchForm.customerNameList = []
+    //     this.$message.error('服务器内部错误')
+    //   });
+    // },
+    // //获取所有项目列表
+    // getProjectList(){
+    //   this.$axios.get("/programm/programm").then((res) => {
+    //     this.searchForm.projectNameList = res.data.data;
+    //   }).catch((err)=>{
+    //     this.searchForm.projectNameList = []
+    //     this.$message.error('服务器内部错误')
+    //   });
+    // },
     // 点击新建需求
     newDemand(){
       this.$router.push({path:'/addAnalysis',query:{type:'new'}})
@@ -867,10 +830,10 @@ export default {
     goSearch(){
         this.$axios
         .post("/analysis/getAnalysis", {
-          custormName: this.searchForm.customerName,
+          // custormName: this.searchForm.customerName,
           demandNumber: Number(this.searchForm.demandNumber),
           endTime: this.searchForm.endDate,
-          programmName: this.searchForm.projectName,
+          // programmName: this.searchForm.projectName,
           startTime: this.searchForm.startDate
         })
         .then((successResponse) => {
@@ -885,6 +848,10 @@ export default {
           this.analysis = []
           this.$message.error('服务器错误')
         });
+    },
+    goSearchList(){
+      console.log('搜索'+this.searchName)
+      //接口待定？？？
     },
     // 重置搜索条件
     resetSearch(){
@@ -960,6 +927,7 @@ export default {
   .clearfix{
     padding: 10px 0;
     position: relative;
+    text-align: center;
   }
 }
 .el-card {
@@ -1027,5 +995,15 @@ export default {
   top: 11px;
   font-size: 20px;
   cursor: pointer;
+}
+.search-last{
+  width: 200px;
+  & >>> .el-input__inner{
+    padding: 0 20px 0 5px !important;
+    text-align: left !important
+  }
+  & >>> .el-input__suffix-inner{
+      line-height: 28px;
+    }
 }
 </style>
