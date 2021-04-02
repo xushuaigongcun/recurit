@@ -19,7 +19,7 @@
       <information-form :candidateData="candidateData"/>
     </div>
 
-    <div style="text-align: center;">
+    <div style="text-align: right;">
       <el-button v-if="active!=1" style="margin-top: 12px" @click="lastStep" align-center>上一步</el-button>
       <el-button style="margin-top: 12px" type="primary" @click="next" align-center>下一步</el-button>
     </div>

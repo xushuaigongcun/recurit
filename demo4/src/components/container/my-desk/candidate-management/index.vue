@@ -53,6 +53,11 @@
           width="220">
         </el-table-column>
         <el-table-column
+          prop="status"
+          label="状态"
+          width="220">
+        </el-table-column>
+        <el-table-column
           prop="graduationSchool"
           label="毕业学校"
           width="220">
@@ -94,6 +99,7 @@
           <template slot-scope="scope">
             <el-button @click="goTrack(scope.row)" type="text" size="small">跟踪</el-button>
             <el-button @click="goDistribution(scope.row)"  type="text" size="small">分配</el-button>
+            <el-button @click="updateStatus(scope.row)"  type="text" size="small">状态修改</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -125,6 +131,7 @@ export default {
         talentName: '',
         graduationTime: '',
         educationBackground: '',
+        status:""
       },
       tableData: [],
     }
@@ -182,6 +189,20 @@ export default {
         detailDate: row
       }})
     },
+    updateStatus(row){
+      var status = null
+      if(row.status == 0){
+        status = 1
+      }else{
+        status = 0
+      }
+      this.$axios
+      .put("/talentPool/updateStatus?talentId="+row.talentId+"&status="+status).then((successResponse)=>{
+        this.$message.success(successResponse.data.msg)
+      }).catch((err)=>{
+        this.$message.error('服务器错误')
+      })
+    }
   },
 };
 </script>

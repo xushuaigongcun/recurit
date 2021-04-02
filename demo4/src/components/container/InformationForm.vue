@@ -8,7 +8,7 @@
         ref="ruleForm"
         class="demo-ruleForm"
         :model="ruleForm"
-        label-width="180px"
+        label-width="100px"
         size="mini"
       >
         <el-row class="form-list">
@@ -145,7 +145,7 @@
         </el-row>
 
         <el-row class="save-btn">
-          <el-form-item size="medium" align-center :inline="false">
+          <el-form-item size="medium" align-right :inline="false">
             <el-button type="primary" @click="onSubmit('ruleForm')"
               >保存</el-button
             >
@@ -173,7 +173,7 @@
                 </el-select>
               </el-form-item>
             </el-col>
-            <el-col :span="6" v-if="postForm.customerName">
+            <!-- <el-col :span="6" v-if="postForm.customerName">
               <el-form-item label="部门名称" prop="jobName">
                 <el-select class="select-slot" v-model="postForm.department"
                 @change="selectedDepartment"
@@ -227,7 +227,7 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-            </el-col>
+            </el-col> -->
           </el-row>
 
           <el-row class="save-btn">
@@ -237,7 +237,6 @@
               >
             </el-form-item>
           </el-row>
-
           <!-- <el-row style="text-align: center;">
             <el-form-item size="medium">
               <el-button type="info" @click="goBack">返回</el-button>
@@ -245,6 +244,70 @@
             </el-form-item>
           </el-row> -->
         </el-form>
+        <el-table
+          :data="tableData"
+          border
+          style="width: 90%">
+          <!-- <el-table-column
+            width="80">
+            <el-checkbox v-model="checked"></el-checkbox>
+          </el-table-column> -->
+          <el-table-column
+            prop="demandNumber"
+            label="需求编号">
+          </el-table-column>
+          <el-table-column
+            prop="jobName"
+            label="工作岗位">
+          </el-table-column>
+          <el-table-column
+            prop="custormName"
+            label="客户名称"
+           >
+          </el-table-column>
+          <el-table-column
+            prop="jobName"
+            label="部门名称"
+           >
+          </el-table-column>
+          <el-table-column
+            prop="programmName"
+            label="项目名称"
+            >
+          </el-table-column>
+        </el-table>
+        <el-table
+        :data="changeData"
+        border
+        style="width: 90%">
+        <el-table-column
+          width="80">
+          <el-checkbox v-model="checked" @change="changeStatus" ></el-checkbox>
+        </el-table-column>
+        <el-table-column
+          prop="demandNumber"
+          label="需求编号">
+        </el-table-column>
+        <el-table-column
+          prop="jobName"
+          label="工作岗位">
+        </el-table-column>
+        <el-table-column
+          prop="custormName"
+          label="客户名称"
+         >
+        </el-table-column>
+        <el-table-column
+          prop="jobName"
+          label="部门名称"
+         >
+        </el-table-column>
+        <el-table-column
+          prop="programmName"
+          label="项目名称"
+          >
+        </el-table-column>
+      </el-table>
       </div>
     </div>
   </div>
@@ -263,6 +326,10 @@ export default {
   },
   data() {
     return {
+      checked:false,
+      tableData: [],
+      changeData:[],
+      analysisList:[],
       postForm:{
         demandName: '',
         demandNameList: [],
@@ -375,16 +442,40 @@ export default {
     this.work();
     this.origin();
     this.getCustormList();//客户列表
+    this.showDetail()
   },
   methods: {
+    // 展示列表
+    showDetail(){
+      this.$axios
+        .get("/analysisJobTalent/getAnalysisJob?talentId="+this.candidateData.talentId)
+        .then((successResponse) => {
+          this.tableData = successResponse.data.data;
+          var i;
+          for(i of successResponse.data.data){
+            this.analysisList.push(i.analysisId)
+          }
+        });
+    },
+    changeDetail(){
+      this.$axios
+        .post("/recurit/getJob?custormId="+this.postForm.customerName,
+          this.analysisList
+        )
+        .then((successResponse) => {
+          this.changeData = successResponse.data.data
+        });
+    },
     //选择客户
     selectedCustomer(){
       this.postForm.department = ""
       this.postForm.projectName = ""
       this.postForm.demandName = ""
       this.postForm.jobName = ""
-      //调用部门接口
-      this.getDeptList()
+      this.changeDetail()
+    },
+    changeStatus(row){
+      console.log(row)
     },
     //选择部门
     selectedDepartment(){
@@ -617,7 +708,7 @@ export default {
   vertical-align: top;
 }
 .save-btn{
-  text-align: center;
+  text-align: right;
 }
 .form-list{
   display: flex;

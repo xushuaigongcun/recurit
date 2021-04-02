@@ -964,6 +964,7 @@ export default {
 
 .demand-list{
   text-align: left;
+  font-size: 12px;
   .el-row{
     span{
       color: #303133;
